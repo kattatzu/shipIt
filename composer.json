@@ -1,0 +1,28 @@
+{
+  "name": "kattatzu/ship-it",
+  "description": "Librería para usar el API de ShipIt",
+  "keywords": [
+    "laravel",
+    "illuminate",
+    "shipit"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jose Eduardo Rios",
+      "email": "kattatzu@gmail.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "Kattatzu\\ShipIt\\": "src/"
+    }
+  }
+}
