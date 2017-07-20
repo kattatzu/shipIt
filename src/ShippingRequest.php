@@ -121,7 +121,7 @@ class ShippingRequest
 
         unset($data['commune_id']);
 
-        return array('package' => $data);
+        return $data;
     }
 
     /**

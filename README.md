@@ -300,7 +300,21 @@ $quotationItem = shipit_economic_quotation($request);
 $response = shipit_send_shipping($request);
 
 ```
+### Callback
 
+ShipIt nos envia dos callback, una para notificarnos que una solicitud ha sido registrada y otra que indica que 
+se le asigno un código de seguimiento o cambio en sus estados.
+
+La librería permite escuchar dos eventos para recibir estos callbacks y realizar las operaciones que correspondan.
+
+Los eventos son:
+
+- **Kattatzu\ShipIt\Events\ShipItCallbackPostEvent**: nos indica que una solicitud fue registrada
+- **Kattatzu\ShipIt\Events\ShipItCallbackPutEvent**: nos indica que una solicitud fue actualizada
+
+#### Instalación
+
+Lo primero que debemos hacer es crear los Event Listeners que escucharán a estos eventos
 
 
 No dudes en enviarme tus feedbacks o pull-request para mejorar esta librería.

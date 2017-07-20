@@ -201,8 +201,32 @@ class ShipIt
      */
     public function requestShipping(ShippingRequest $request)
     {
-        $data = $request->toShipItFormat($this->environment());
+        $data = [
+            'package' => $request->toShipItFormat($this->environment())
+        ];
+
         $response = $this->get(self::METHOD_POST, '/packages', $data);
+
+        return new ShippingRequestResponse($response);
+    }
+
+    /**
+     * Envia un solicitud de delivery para multiples items
+     *
+     * @param array $items arreglo de ShippingRequest's
+     * @return ShippingRequestResponse
+     */
+    public function requestMassiveShipping(array $items)
+    {
+        $data = [
+            'packages' => []
+        ];
+
+        foreach($items as $item){
+            $data['packages'][] = $item->toShipItFormat($this->environment());
+        }
+
+        $response = $this->get(self::METHOD_POST, '/mass_create', $data);
 
         return new ShippingRequestResponse($response);
     }
