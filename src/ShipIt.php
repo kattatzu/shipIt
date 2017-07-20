@@ -231,6 +231,7 @@ class ShipIt
         return new ShippingRequestResponse($response);
     }
 
+    
 
     /**
      * Retorna el historial de despachos para una fecha
