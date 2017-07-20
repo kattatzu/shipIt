@@ -43,7 +43,13 @@ class ShipIt
     {
         $this->email($email);
         $this->token($token);
+
+        if (!in_array($environment, [ShipIt::ENV_DEVELOPMENT, ShipIt::ENV_PRODUCTION])) {
+            $environment = ShipIt::ENV_PRODUCTION;
+        }
+
         $this->environment($environment);
+
     }
 
 

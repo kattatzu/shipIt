@@ -29,9 +29,13 @@ class ShipItServiceProvider extends ServiceProvider
         $this->app->singleton(ShipIt::class, function ($app) {
             $email = config('shipit.email', env('SHIPIT_EMAIL'));
             $token = config('shipit.token', env('SHIPIT_TOKEN'));
+            $environment = config('shipit.environment', env('SHIPIT_ENV', 'production'));
 
+            if (!in_array($environment, [ShipIt::ENV_DEVELOPMENT, ShipIt::ENV_PRODUCTION])) {
+                $environment = ShipIt::ENV_PRODUCTION;
+            }
 
-            return new ShipIt($email, $token);
+            return new ShipIt($email, $token, $environment);
         });
     }
 

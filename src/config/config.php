@@ -3,5 +3,6 @@
 return array(
     'email' => env('SHIPIT_EMAIL'),
     'token' => env('SHIPIT_TOKEN'),
-    'callback_url' => env('SHIPIT_CALLBACK_URL', 'callback/shipit')
+    'callback_url' => env('SHIPIT_CALLBACK_URL', 'callback/shipit'),
+    'environment' => env('SHIPIT_ENV', 'production'),
 );
