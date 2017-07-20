@@ -1,7 +1,7 @@
 # ShipIt
 
 Librería que permite la integración con el API de ShipIt (https://developers.shipit.cl/docs) para 
-enviar solcitudes de delivery, consultar su estados y otras acciones.
+enviar solicitudes de despacho, consultar su estados y otras acciones.
 
 ## Obtener las Credenciales de Acceso
 
@@ -178,9 +178,9 @@ $quotationItem = $shipIt->getBestQuotation($request);
 echo $quotationItem->total;
 ```
 
-### Enviar una solicitud de Delivery
+### Enviar una solicitud de Despacho
 
-Para enviar una solicitud de delivery debes crear una instancia **DeliveryRequest** para ser enviada al método **requestShipping**:
+Para enviar una solicitud de despacho debes crear una instancia **ShippingRequest** para ser enviada al método **requestShipping**:
 
 ```php
 $request = new ShippingRequest([
@@ -190,11 +190,11 @@ $request = new ShippingRequest([
     'items_count' => 1,
     'cellphone' => '912341234',
     'is_payable' => false,
-    'packing' => DeliveryRequest::PACKING_NONE,
-    'shipping_type' => DeliveryRequest::DELIVERY_NORMAL,
-    'destiny' => DeliveryRequest::DESTINATION_HOME,
-    'courier_for_client' => DeliveryRequest::COURIER_CHILEXPRESS,
-    'approx_size' => DeliveryRequest::SIZE_SMALL,
+    'packing' => ShippingRequest::PACKING_NONE,
+    'shipping_type' => ShippingRequest::DELIVERY_NORMAL,
+    'destiny' => ShippingRequest::DESTINATION_HOME,
+    'courier_for_client' => ShippingRequest::COURIER_CHILEXPRESS,
+    'approx_size' => ShippingRequest::SIZE_SMALL,
     'address_commune_id' => 317,
     'address_street' => 'San Carlos',
     'address_number' => 123,
@@ -214,7 +214,7 @@ $response =  $shipIt->requestShipping($request);
 echo $response['id'];
 ```
 
-### Listar Solicitudes de Delivery
+### Listar Solicitudes de Despacho
 
 Puedes consultar el historial de solicitudes realizadas por día usando el método **getAllShippings**:
 
