@@ -3,34 +3,36 @@
 class ShippingHistoryResponse
 {
 
-    protected $deliveries = [];
+    protected $shippings = [];
 
     public function __construct($response)
     {
         if (is_array($response)) {
-            foreach ($response as $delivery) {
-                $this->add($delivery);
+            foreach ($response as $shipping) {
+                $this->add($shipping);
             }
         }
 
     }
 
-    public function add($delivery)
+    public function add($shipping)
     {
-        $this->deliveries[] = new Shipping($delivery);
+        $this->shippings[] = new Shipping($shipping);
     }
 
-    public function getDeliveries(){
-        return $this->deliveries;
+    public function getDeliveries()
+    {
+        return $this->shippings;
     }
 
-    public function toArray(){
-        $deliveries = [];
+    public function toArray()
+    {
+        $shippings = [];
 
-        foreach($this->deliveries as $delivery){
-            $deliveries[] = $delivery->toArray();
+        foreach ($this->shippings as $shipping) {
+            $shippings[] = $shipping->toArray();
         }
 
-        return $deliveries;
+        return $shippings;
     }
 }

@@ -219,17 +219,17 @@ echo $response['id'];
 Puedes consultar el historial de solicitudes realizadas por día usando el método **getAllShippings**:
 
 ```php
-$shippings = $shipIt->getAllShippings('2017-04-06');
+$history = $shipIt->getAllShippings('2017-04-06');
 
 // ó
 
-$shippings = $shipIt->getAllShippings(Carbon::yesterday());
+$history = $shipIt->getAllShippings(Carbon::yesterday());
 
 // ó
 
-$shippings = $shipIt->getAllShippings(); // Por defecto será la fecha actual
+$history = $shipIt->getAllShippings(); // Por defecto será la fecha actual
 
-foreach($shippings as $shipping){
+foreach($history->getShippings() as $shipping){
     echo $shipping->id . "<br>";
 }
 ```
@@ -237,10 +237,10 @@ foreach($shippings as $shipping){
 Puedes trabajar el resultado como array usando el método **toArray()**:
 
 ```php
-$shippings = $shipIt->getAllShippings();
+$history = $shipIt->getAllShippings();
 
-foreach($shippings as $shipping){
-    echo $shipping->id . "<br>";
+foreach($history->toArray() as $shipping){
+    echo $shipping['id'] . "<br>";
 }
 
 
