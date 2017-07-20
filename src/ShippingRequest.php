@@ -2,7 +2,7 @@
 
 use Kattatzu\ShipIt\Exception\AttributeNotValidException;
 
-class DeliveryRequest
+class ShippingRequest
 {
     // Tamaños del envio
     const SIZE_SMALL = 'Pequeño (10x10x10cm)';

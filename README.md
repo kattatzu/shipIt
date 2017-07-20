@@ -177,3 +177,71 @@ $request = new QuotationRequest([
 $quotationItem = $shipIt->getBestQuotation($request);
 echo $quotationItem->total;
 ```
+
+### Enviar una solicitud de Delivery
+
+Para enviar una solicitud de delivery debes crear una instancia **DeliveryRequest** para ser enviada al método **requestShipping**:
+
+```php
+$request = new DeliveryRequest([
+    'reference' => 'S000001',
+    'full_name' => 'José Eduardo Rios',
+    'email' => 'cliente@gmail.com',
+    'items_count' => 1,
+    'cellphone' => '912341234',
+    'is_payable' => false,
+    'packing' => DeliveryRequest::PACKING_NONE,
+    'shipping_type' => DeliveryRequest::DELIVERY_NORMAL,
+    'destiny' => DeliveryRequest::DESTINATION_HOME,
+    'courier_for_client' => DeliveryRequest::COURIER_CHILEXPRESS,
+    'approx_size' => DeliveryRequest::SIZE_SMALL,
+    'address_commune_id' => 317,
+    'address_street' => 'San Carlos',
+    'address_number' => 123,
+    'address_complement' => null,
+]);
+
+$response =  $shipIt->requestShipping($request);
+echo $response->id; // id de la solicitud en ShipIt
+```
+
+Puedes trabajarlo como array usando el método **toArray()**:
+
+```php
+$request = new ShippingRequest(...);
+
+$response =  $shipIt->requestShipping($request);
+echo $response['id'];
+```
+
+### Listar Solicitudes de Delivery
+
+Puedes consultar el historial de solicitudes realizadas por día usando el método **getAllShippings**:
+
+```php
+$shippings = $shipIt->getAllShippings('2017-04-06');
+
+// ó
+
+$shippings = $shipIt->getAllShippings(Carbon::yesterday());
+
+// ó
+
+$shippings = $shipIt->getAllShippings(); // Por defecto será la fecha actual
+
+foreach($shippings as $shipping){
+    echo $shipping->id . "<br>";
+}
+```
+
+Puedes trabajar el resultado como array usando el método **toArray()**:
+
+```php
+$shippings = $shipIt->getAllShippings();
+
+foreach($shippings as $shipping){
+    echo $shipping->id . "<br>";
+}
+
+
+

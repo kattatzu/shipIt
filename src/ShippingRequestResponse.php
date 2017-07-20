@@ -1,9 +1,9 @@
 <?php namespace Kattatzu\ShipIt;
 
-class Delivery
+class ShippingRequestResponse
 {
     /**
-     * @var array atributos del delivery
+     * @var array atributos de la respuesta
      */
     private $data = [];
 
@@ -20,7 +20,7 @@ class Delivery
     }
 
     /**
-     * Retorna los datos del delivery en un array
+     * Retorna los datos de la respuesta en un array
      *
      * @return array
      */
@@ -30,7 +30,7 @@ class Delivery
     }
 
     /**
-     * Retorna un atributo del delivery
+     * Retorna un atributo de la respuesta
      *
      * @param $varName
      * @return mixed|null

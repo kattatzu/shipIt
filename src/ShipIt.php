@@ -196,15 +196,15 @@ class ShipIt
     /**
      * Envia una solicitud de delivery
      *
-     * @param DeliveryRequest $request
-     * @return DeliveryRequestResponse
+     * @param ShippingRequest $request
+     * @return ShippingRequestResponse
      */
-    public function requestShipping(DeliveryRequest $request)
+    public function requestShipping(ShippingRequest $request)
     {
         $data = $request->toShipItFormat($this->environment());
         $response = $this->get(self::METHOD_POST, '/packages', $data);
 
-        return new DeliveryRequestResponse($response);
+        return new ShippingRequestResponse($response);
     }
 
 
@@ -212,7 +212,7 @@ class ShipIt
      * Retorna el historial de despachos para una fecha
      *
      * @param null $date
-     * @return array
+     * @return ShippingHistoryResponse
      */
     public function getAllShippings($date = null)
     {
@@ -230,12 +230,7 @@ class ShipIt
 
         $response = $this->get(self::METHOD_GET, '/packages?' . implode('&', $params));
 
-        $shippings = [];
-        foreach ($response as $shipping) {
-            $shippings[] = new Delivery($shipping);
-        }
-
-        return $shippings;
+        return new ShippingHistoryResponse($response);
     }
 
 
@@ -243,7 +238,7 @@ class ShipIt
      * Retorna el detalle de un despacho
      *
      * @param $id
-     * @return Delivery
+     * @return Shipping
      * @throws NumberNotValidException
      */
     public function getShipping($id)
@@ -255,7 +250,7 @@ class ShipIt
 
         $response = $this->get(self::METHOD_GET, '/packages/' . $id);
 
-        return new Delivery($response);
+        return new Shipping($response);
     }
 
 
