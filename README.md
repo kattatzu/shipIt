@@ -84,39 +84,96 @@ Para esto es necesario que crees una instancia **QuotationRequest** para ser env
 
 ```php
 $request = new QuotationRequest([
-	'commune_id' => 317,    // id de la Comuna en ShipIt
+    'commune_id' => 317,    // id de la Comuna en ShipIt
     'height' => 10,         // altura en centimetros
     'length' => 10,         // largo en centimetros
     'width' => 10,          // ancho en centimetros
     'weight' => 1          // peso en kilogramos
 ]);
-var_dump($shipIt->getEconomicQuotation($request)->toArray());
+var_dump($shipIt->getQuotation($request));
 ```
 
 ```php
-array:3 [▼
-  0 => array:5 [▼
-    "courier" => "correos"
-    "delivery_time" => "1"
-    "interval" => "1.5"
-    "pv" => 1.0
-    "total" => 2596
+Quotation {#210 ▼
+  -items: array:3 [▼
+    0 => QuotationItem {#208 ▼
+      -data: array:5 [▼
+        "courier" => "correos"
+        "delivery_time" => "1"
+        "interval" => "1.5"
+        "pv" => 1.0
+        "total" => 2596
+      ]
+    }
+    1 => QuotationItem {#180 ▶}
+    2 => QuotationItem {#186 ▶}
   ]
-  1 => array:5 [▼
-    "courier" => "chilexpress"
-    "delivery_time" => "1"
-    "interval" => "0..1.5"
-    "pv" => 1.0
-    "total" => 2960
-  ]
-  2 => array:5 [▼
-    "courier" => "starken"
-    "delivery_time" => "1"
-    "interval" => "1"
-    "pv" => 1.0
-    "total" => 3271
-  ]
-]
+}
+```
+
+Puedes acceder a los items y sus propiedades de la siguiente forma:
+
+```php
+$request = new QuotationRequest(...);
+
+$quotationItems = $shipIt->getQuotation($request)->getItems();
+
+foreach($quotationItems as $item){
+    echo $item->total . "<br>";
+}
+
+```
+
+Si prefieres trabajarlos como array lo puedes hacer usando el método **toArray()**
+
+```php
+$request = new QuotationRequest(...);
+
+$quotationItems = $shipIt->getQuotation($request)->toArray();
+
+foreach($quotationItems as $item){
+    echo $item['total'] . "<br>";
+}
 ```
 
 
+
+### Obtener la Cotización más Económica
+
+Puedes enviar los datos de tu despacho y obtener la cotización más económica.
+
+
+#### Ejemplo
+
+```php
+$request = new QuotationRequest([
+    'commune_id' => 317,    // id de la Comuna en ShipIt
+    'height' => 10,         // altura en centimetros
+    'length' => 10,         // largo en centimetros
+    'width' => 10,          // ancho en centimetros
+    'weight' => 1          // peso en kilogramos
+]);
+
+$quotationItem = $shipIt->getEconomicQuotation($request);
+echo $quotationItem->total;
+```
+
+### Obtener la Cotización más Conveniente
+
+Puedes obtener la cotización más conveniente tanto en tiempo de respuesta (SLA) como en precio.
+
+
+#### Ejemplo
+
+```php
+$request = new QuotationRequest([
+    'commune_id' => 317,    // id de la Comuna en ShipIt
+    'height' => 10,         // altura en centimetros
+    'length' => 10,         // largo en centimetros
+    'width' => 10,          // ancho en centimetros
+    'weight' => 1          // peso en kilogramos
+]);
+
+$quotationItem = $shipIt->getBestQuotation($request);
+echo $quotationItem->total;
+```

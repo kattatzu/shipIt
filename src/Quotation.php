@@ -19,6 +19,17 @@ class Quotation
         $this->items[] = new QuotationItem($item);
     }
 
+
+    /**
+     * Retorna un array de los items incluídos en la cotización.
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
     /**
      * Retorna los datos de la cotización en un array
      *
