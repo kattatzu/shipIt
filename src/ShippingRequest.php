@@ -109,7 +109,7 @@ class ShippingRequest
         $data = $this->data;
 
         if ($environment === ShipIt::ENV_DEVELOPMENT) {
-            $data['reference'] = 'test-' . $data['reference'];
+            $data['reference'] = 'TEST-' . $data['reference'];
         }
 
         $data['address_attributes']['commune_id'] = $data['address_commune_id'];
