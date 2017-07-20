@@ -49,8 +49,7 @@ array:425 [▼
       "couriers_availables" => {#211}
       "is_available" => false
     ]
-  }
-  1 => Commune
+  },
   ...
 ]
 ```
@@ -59,7 +58,7 @@ array:425 [▼
 
 ### Obtener las Regiones y Comunas
 
-Puedes listar las regiones que tiene registradas ShipIt para sincronizar 
+Puedes listar las regiones y comunas que tiene registradas ShipIt para sincronizar 
 tu sistema.
 
 ```php
@@ -67,8 +66,57 @@ $shipIt->getRegions();
 $shipIt->getCommunes()
 ```
 #### Ejemplo
+
 ```php
 $regions = $shipIt->getRegions();
 echo $regions[0]->name;
 // "Arica y Parinacota"
 ```
+
+### Obtener una Cotización
+
+Puedes enviar los datos de tu despacho y obtener una cotización con las opciones
+de cariers que dispone ShipIt.
+
+Para esto es necesario que crees una instancia **QuotationRequest** para ser enviada al método **getQuotation**.
+
+#### Ejemplo
+
+```php
+$request = new QuotationRequest([
+	'commune_id' => 317,    // id de la Comuna en ShipIt
+    'height' => 10,         // altura en centimetros
+    'length' => 10,         // largo en centimetros
+    'width' => 10,          // ancho en centimetros
+    'weight' => 1          // peso en kilogramos
+]);
+var_dump($shipIt->getEconomicQuotation($request)->toArray());
+```
+
+```php
+array:3 [▼
+  0 => array:5 [▼
+    "courier" => "correos"
+    "delivery_time" => "1"
+    "interval" => "1.5"
+    "pv" => 1.0
+    "total" => 2596
+  ]
+  1 => array:5 [▼
+    "courier" => "chilexpress"
+    "delivery_time" => "1"
+    "interval" => "0..1.5"
+    "pv" => 1.0
+    "total" => 2960
+  ]
+  2 => array:5 [▼
+    "courier" => "starken"
+    "delivery_time" => "1"
+    "interval" => "1"
+    "pv" => 1.0
+    "total" => 3271
+  ]
+]
+```
+
+
