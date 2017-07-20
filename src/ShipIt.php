@@ -226,12 +226,12 @@ class ShipIt
             $data['packages'][] = $item->toShipItFormat($this->environment());
         }
 
-        $response = $this->get(self::METHOD_POST, '/mass_create', $data);
+        $response = $this->get(self::METHOD_POST, '/packages/mass_create', $data);
 
         return new ShippingRequestResponse($response);
     }
 
-    
+
 
     /**
      * Retorna el historial de despachos para una fecha

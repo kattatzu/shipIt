@@ -314,8 +314,27 @@ Los eventos son:
 
 #### Instalación
 
-Lo primero que debemos hacer es crear los Event Listeners que escucharán a estos eventos
+Lo primero que debemos hacer es crear los EventListeners que escucharán a estos eventos y registrarlos en el 
+**EventServiceProvider** (app/Providers/EventServiceProvider.php).
 
+```php
+protected $listen = [
+    'Kattatzu\ShipIt\Events\ShipItCallbackPostEvent' => [
+        'App\Listeners\ShipItCallbackPostListener',
+    ],
+    'Kattatzu\ShipIt\Events\ShipItCallbackPutEvent' => [
+        'App\Listeners\ShipItCallbackPutListener',
+    ],
+];
+```
+
+Una vez definidos los EventListeners podrás apuntar el Webhook de ShipIt (http://clientes.shipit.cl/settings/api) a la
+url:
+
+**https://tudominio.cl/callback/shipit**
+
+Puedes personalizar este endpoint en el archivo de configuración **shipit.php** o en tu archivo .env con la key
+**SHIPIT_CALLBACK_URL**.
 
 No dudes en enviarme tus feedbacks o pull-request para mejorar esta librería.
 
