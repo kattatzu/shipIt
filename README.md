@@ -18,7 +18,7 @@ Para instalar la librería ejecuta el siguiente comando en la consola:
 composer require kattatzu/ship-it
 ```
 
-**[Instalación y Uso en Laravel](#instalacion-y-uso-en-laravel)**
+**[Instalación y Uso en Laravel](#instalación-y-uso-en-laravel)**
 
 ## Uso de forma Standalone
 
