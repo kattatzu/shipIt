@@ -20,7 +20,7 @@ class ShippingHistoryResponse
         $this->shippings[] = new Shipping($shipping);
     }
 
-    public function getDeliveries()
+    public function getShippings()
     {
         return $this->shippings;
     }
