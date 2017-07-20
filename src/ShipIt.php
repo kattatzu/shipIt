@@ -52,7 +52,6 @@ class ShipIt
 
     }
 
-
     /**
      * Retorna el email registrado. Si se define un valor se sobre-escribe el valor actual.
      *
