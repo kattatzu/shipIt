@@ -303,7 +303,7 @@ $response = shipit_send_shipping($request);
 
 No dudes en enviarme tus feedbacks o pull-request para mejorar esta librería.
 
-Licencia
+## Licencia
 
 MIT License
 
