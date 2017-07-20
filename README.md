@@ -90,41 +90,14 @@ $request = new QuotationRequest([
     'width' => 10,          // ancho en centimetros
     'weight' => 1          // peso en kilogramos
 ]);
-var_dump($shipIt->getQuotation($request));
-```
-
-```php
-Quotation {#210 ▼
-  -items: array:3 [▼
-    0 => QuotationItem {#208 ▼
-      -data: array:5 [▼
-        "courier" => "correos"
-        "delivery_time" => "1"
-        "interval" => "1.5"
-        "pv" => 1.0
-        "total" => 2596
-      ]
-    }
-    1 => QuotationItem {#180 ▶}
-    2 => QuotationItem {#186 ▶}
-  ]
-}
-```
-
-Puedes acceder a los items y sus propiedades de la siguiente forma:
-
-```php
-$request = new QuotationRequest(...);
-
 $quotationItems = $shipIt->getQuotation($request)->getItems();
 
 foreach($quotationItems as $item){
-    echo $item->total . "<br>";
+    echo $item->courier . "<br>";
 }
-
 ```
 
-Si prefieres trabajarlos como array lo puedes hacer usando el método **toArray()**
+Si prefieres trabajar los items como array lo puedes hacer usando el método **toArray()**
 
 ```php
 $request = new QuotationRequest(...);
@@ -135,7 +108,6 @@ foreach($quotationItems as $item){
     echo $item['total'] . "<br>";
 }
 ```
-
 
 
 ### Obtener la Cotización más Económica
@@ -156,6 +128,12 @@ $request = new QuotationRequest([
 
 $quotationItem = $shipIt->getEconomicQuotation($request);
 echo $quotationItem->total;
+
+// o como array
+
+$quotationItem = $shipIt->getEconomicQuotation($request)->toArray();
+echo $quotationItem['total'];
+
 ```
 
 ### Obtener la Cotización más Conveniente
@@ -176,6 +154,11 @@ $request = new QuotationRequest([
 
 $quotationItem = $shipIt->getBestQuotation($request);
 echo $quotationItem->total;
+
+// o como array
+
+$quotationItem = $shipIt->getBestQuotation($request)->toArray();
+echo $quotationItem['total'];
 ```
 
 ### Enviar una solicitud de Despacho
@@ -210,7 +193,7 @@ Puedes trabajarlo como array usando el método **toArray()**:
 ```php
 $request = new ShippingRequest(...);
 
-$response =  $shipIt->requestShipping($request);
+$response =  $shipIt->requestShipping($request)->toArray();
 echo $response['id'];
 ```
 
@@ -242,6 +225,102 @@ $history = $shipIt->getAllShippings();
 foreach($history->toArray() as $shipping){
     echo $shipping['id'] . "<br>";
 }
+```
+
+
+### Obtener el detalle de un Despacho
+
+Puedes consultar los datos de un despacho historico enviando el id entregado por ShipIt 
+usando el método **getShipping**:
+
+```php
+$shipping = $shipIt->getShipping(136107);
+echo $shipping->reference;
+
+// o como array
+
+$shipping = $shipIt->getShipping(136107)->toArray();
+echo $shipping['reference'];
+```
+
+## Instalación y Uso en Laravel
+
+Después de hacer la instalación con Composer debes registrar el ServiceProvider y el alias en tu archivo config/app.php:
+
+```php
+'providers' => [
+    ...
+    Kattatzu\ShipIt\Providers\ShipItServiceProvider::class,
+],
+'aliases' => [
+    ...
+    'ShipIt' => Kattatzu\ShipIt\Facades\ShipItFacade::class,
+]
+```
+
+Publica el archivo de configuración ejecutando en Artisan:
+
+```bash
+php artisan vendor:publish --provider="Kattatzu\ShipIt\Providers\ShipItServiceProvider"
+```
+
+Ya puedes ingresar las credenciales en el archivo config/shipit.php o en en archivo .env con las keys:
+
+```bash
+SHIPIT_ENV=development o production
+SHIPIT_EMAIL=xxxxxxxx
+SHIPIT_TOKEN=xxxxxxxx
+SHIPIT_CALLBACK_URL=callback/shipit
+```
+
+### Facades
+
+Ya puedes usar el Facade para acceder de forma rápida a las funciones:
+
+```php
+$shipping = ShipIt::getShipping(136107);
+$regions = ShipIt::getRegions();
+$communes = ShipIt::getCommunes()
+```
+
+### Helpers
+
+También puedes utilizar los helpers:
+
+```php
+$regions = shipit_regions();
+$communes = shipit_communes();
+$shippings = shipit_shippings('2017-06-01');
+$shipping = shipit_shipping(12322);
+$quotationItems = shipit_quotation($request);
+$quotationItem = shipit_best_quotation($request);
+$quotationItem = shipit_economic_quotation($request);
+$response = shipit_send_shipping($request);
+
+```
+
+
+
+No dudes en enviarme tus feedbacks o pull-request para mejorar esta librería.
+
+Licencia
+
+MIT License
+
+Copyright (c) 2017 José Eduardo Ríos
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+
+
+
+
 
 
 
