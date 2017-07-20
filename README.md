@@ -183,7 +183,7 @@ echo $quotationItem->total;
 Para enviar una solicitud de delivery debes crear una instancia **DeliveryRequest** para ser enviada al método **requestShipping**:
 
 ```php
-$request = new DeliveryRequest([
+$request = new ShippingRequest([
     'reference' => 'S000001',
     'full_name' => 'José Eduardo Rios',
     'email' => 'cliente@gmail.com',
