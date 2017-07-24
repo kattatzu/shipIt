@@ -158,14 +158,18 @@ class ShipIt
      *
      * @return array
      */
-    public function getRegions()
+    public function getRegions($asArray = false)
     {
         $regionsResponse = $this->get(self::METHOD_GET, '/regions');
         $regions = [];
 
         if (is_array($regionsResponse)) {
             foreach ($regionsResponse as $regionData) {
-                $regions[] = new Region($regionData);
+                if ($asArray) {
+                    $regions[] = (new Region($regionData))->toArray();
+                }else{
+                    $regions[] = new Region($regionData);
+                }
             }
         }
 
@@ -178,14 +182,18 @@ class ShipIt
      *
      * @return array
      */
-    public function getCommunes()
+    public function getCommunes($asArray = false)
     {
         $communesResponse = $this->get(self::METHOD_GET, '/communes');
         $communes = [];
 
         if (is_array($communesResponse)) {
             foreach ($communesResponse as $communeData) {
-                $communes[] = new Commune($communeData);
+                if ($asArray) {
+                    $communes[] = (new Commune($communeData))->toArray();
+                } else {
+                    $communes[] = new Commune($communeData);
+                }
             }
         }
 
@@ -222,7 +230,7 @@ class ShipIt
             'packages' => []
         ];
 
-        foreach($items as $item){
+        foreach ($items as $item) {
             $data['packages'][] = $item->toShipItFormat($this->environment());
         }
 
@@ -230,7 +238,6 @@ class ShipIt
 
         return new ShippingRequestResponse($response);
     }
-
 
 
     /**
