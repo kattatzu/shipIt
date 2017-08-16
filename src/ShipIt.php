@@ -318,8 +318,10 @@ class ShipIt
         $response = $this->get(self::METHOD_POST, '/shippings/prices', $data);
 
         $quotation = new Quotation;
-        foreach ($response->shipments as $shipment) {
-            $quotation->add($shipment);
+        if(isset($response->shipments)) {
+            foreach ($response->shipments as $shipment) {
+                $quotation->add($shipment);
+            }
         }
 
         return $quotation;
