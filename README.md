@@ -245,7 +245,9 @@ $shipping = $shipIt->getShipping(136107)->toArray();
 echo $shipping['reference'];
 ```
 
-### Utilidad - Obtener la url de seguimiento
+### Utilidades
+ 
+#### Obtener la url de seguimiento
 
 Puede generar la url de seguimiento de un despacho fácilmente:
 
@@ -255,6 +257,16 @@ $url = $shipIt->getTrackingUrl('chilexpress', 72626262);
 // o
 
 $url = ShipIt::getShipping(136097)->getTrackingUrl()
+```
+
+#### Tamaño aproximado del envio
+
+Puedes obtener el tamaño aproximado en el formato que utiliza ShipIt de un paquete.
+
+```php
+$size = $shipIt->getPackageSize($width = 14, $height = 23, $length = 45);
+
+Resultado: Grande (50x50x50cm)
 ```
 
 ## Instalación y Uso en Laravel
@@ -296,6 +308,7 @@ $shipping = ShipIt::getShipping(136107);
 $regions = ShipIt::getRegions();
 $communes = ShipIt::getCommunes()
 $url = ShipIt::getTrackingUrl('chilexpress', 72626262);
+$size = ShipIt::getPackageSize(14, 23, 45);
 ```
 
 ### Helpers
@@ -312,7 +325,7 @@ $quotationItem = shipit_best_quotation($request);
 $quotationItem = shipit_economic_quotation($request);
 $response = shipit_send_shipping($request);
 $url = shipit_tracking_url('starken', 23312332);
-
+$size = shipit_package_size(14, 23, 45);
 ```
 ### Callback
 

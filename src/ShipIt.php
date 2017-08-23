@@ -1,8 +1,7 @@
 <?php namespace Kattatzu\ShipIt;
 
-use Exception;
 use Carbon\Carbon;
-use function GuzzleHttp\Psr7\try_fopen;
+use GuzzleHttp\Exception\ConnectException as GuzzleConnectException;
 use Kattatzu\ShipIt\Events\ShipItCallbackPostEvent;
 use Kattatzu\ShipIt\Events\ShipItCallbackPutEvent;
 use Kattatzu\ShipIt\Exception\ConnectException;
@@ -10,8 +9,6 @@ use Kattatzu\ShipIt\Exception\EmailNotFoundException;
 use Kattatzu\ShipIt\Exception\EndpointNotFoundException;
 use Kattatzu\ShipIt\Exception\NumberNotValidException;
 use Kattatzu\ShipIt\Exception\TokenNotFoundException;
-use Psr\Http\Message\RequestInterface;
-use GuzzleHttp\Exception\ConnectException as GuzzleConnectException;
 
 /**
  * Class ShipIt
@@ -37,6 +34,13 @@ class ShipIt
         'chilexpress' => 'http://chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=:number',
         'starken' => 'http://www.starken.cl/seguimiento?codigo=:number',
         'correoschile' => 'http://www.correos.cl/SitePages/seguimiento/seguimiento.aspx?envio=:number'
+    ];
+
+    private $packageSizes = [
+        29 => 'Pequeño (10x10x10cm)',
+        49 => 'Mediano (30x30x30cm)',
+        60 => 'Grande (50x50x50cm)',
+        999999 => 'Muy Grande (>60x60x60cm)'
     ];
 
     /**
@@ -105,6 +109,29 @@ class ShipIt
     }
 
     /**
+     * Retorna un array con las regiones disponibles en ShipIt
+     *
+     * @return array
+     */
+    public function getRegions($asArray = false)
+    {
+        $regionsResponse = $this->get(self::METHOD_GET, '/regions');
+        $regions = [];
+
+        if (is_array($regionsResponse)) {
+            foreach ($regionsResponse as $regionData) {
+                if ($asArray) {
+                    $regions[] = (new Region($regionData))->toArray();
+                } else {
+                    $regions[] = new Region($regionData);
+                }
+            }
+        }
+
+        return $regions;
+    }
+
+    /**
      * Retorna la respuesta de un endpoint
      *
      * @param string $method método del endpoint
@@ -158,31 +185,6 @@ class ShipIt
         return $response;
     }
 
-
-    /**
-     * Retorna un array con las regiones disponibles en ShipIt
-     *
-     * @return array
-     */
-    public function getRegions($asArray = false)
-    {
-        $regionsResponse = $this->get(self::METHOD_GET, '/regions');
-        $regions = [];
-
-        if (is_array($regionsResponse)) {
-            foreach ($regionsResponse as $regionData) {
-                if ($asArray) {
-                    $regions[] = (new Region($regionData))->toArray();
-                }else{
-                    $regions[] = new Region($regionData);
-                }
-            }
-        }
-
-        return $regions;
-    }
-
-
     /**
      * Retorna un array con las comunas disponibles en ShipIt
      *
@@ -205,7 +207,6 @@ class ShipIt
 
         return $communes;
     }
-
 
     /**
      * Envia una solicitud de delivery
@@ -285,12 +286,38 @@ class ShipIt
             throw new NumberNotValidException($id);
         }
 
-
         $response = $this->get(self::METHOD_GET, '/packages/' . $id);
 
         return new Shipping($response, $this);
     }
 
+    /**
+     * Retorna el tamaño aproximado del paquete
+     *
+     * @param int $width ancho en cm.
+     * @param int $height alto en cm.
+     * @param int $length longitud en cm (profundidad)
+     * @return string|null
+     */
+    public function getPackageSize($width, $height, $length)
+    {
+        if (!is_numeric($width) or !is_numeric($height) or !is_numeric($length)) {
+            return null;
+        }
+
+        $packageSize = 0;
+        $packageSize = ($packageSize < $height) ? $height : $packageSize;
+        $packageSize = ($packageSize < $width) ? $width : $packageSize;
+        $packageSize = ($packageSize < $length) ? $length : $packageSize;
+
+        foreach ($this->packageSizes as $sizeLimit => $name) {
+            if ($packageSize <= $sizeLimit) {
+                return $name;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Recibe el callback entregado por ShipIt y lanza el evento que corresponda (solo Laravel)
@@ -324,7 +351,7 @@ class ShipIt
         $response = $this->get(self::METHOD_POST, '/shippings/prices', $data);
 
         $quotation = new Quotation;
-        if(isset($response->shipments)) {
+        if (isset($response->shipments)) {
             foreach ($response->shipments as $shipment) {
                 $quotation->add($shipment);
             }
@@ -370,7 +397,7 @@ class ShipIt
      */
     public function getTrackingUrl($provider, $trackingNumber)
     {
-        if(!isset($this->providersTrakingUrls[$provider])){
+        if (!isset($this->providersTrakingUrls[$provider])) {
             return null;
         }
 

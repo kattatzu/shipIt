@@ -62,3 +62,10 @@ if (!function_exists('shipit_tracking_url')) {
         return ShipIt::getTrackingUrl($provider, $trackingNumber);
     }
 }
+
+if (!function_exists('shipit_package_size')) {
+    function shipit_package_size($width, $height, $length)
+    {
+        return ShipIt::getPackageSize($width, $height, $length);
+    }
+}
