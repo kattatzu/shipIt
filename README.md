@@ -245,6 +245,14 @@ $shipping = $shipIt->getShipping(136107)->toArray();
 echo $shipping['reference'];
 ```
 
+### Utilidad - Obtener la url de seguimiento
+
+Puede generar la url de seguimiento de un despacho fácilmente:
+
+```php
+$url = $shipIt->getTrackingUrl('chilexpress', 72626262);
+```
+
 ## Instalación y Uso en Laravel
 
 Después de hacer la instalación con Composer debes registrar el ServiceProvider y el alias en tu archivo config/app.php:
@@ -283,6 +291,7 @@ Ya puedes usar el Facade para acceder de forma rápida a las funciones:
 $shipping = ShipIt::getShipping(136107);
 $regions = ShipIt::getRegions();
 $communes = ShipIt::getCommunes()
+$url = ShipIt::getTrackingUrl('chilexpress', 72626262);
 ```
 
 ### Helpers
@@ -298,6 +307,7 @@ $quotationItems = shipit_quotation($request);
 $quotationItem = shipit_best_quotation($request);
 $quotationItem = shipit_economic_quotation($request);
 $response = shipit_send_shipping($request);
+$url = shipit_tracking_url('starken', 23312332);
 
 ```
 ### Callback
