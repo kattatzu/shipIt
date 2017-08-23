@@ -55,3 +55,10 @@ if (!function_exists('shipit_send_shipping')) {
         return ShipIt::requestShipping($request);
     }
 }
+
+if (!function_exists('shipit_tracking_url')) {
+    function shipit_tracking_url($provider, $trackingNumber)
+    {
+        return ShipIt::getTrackingUrl($provider, $trackingNumber);
+    }
+}

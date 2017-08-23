@@ -33,6 +33,12 @@ class ShipIt
 
     protected $environment = 'production';
 
+    private $providersTrakingUrls = [
+        'chilexpress' => 'http://chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=:number',
+        'starken' => 'http://www.starken.cl/seguimiento?codigo=:number',
+        'correoschile' => 'http://www.correos.cl/SitePages/seguimiento/seguimiento.aspx?envio=:number'
+    ];
+
     /**
      * Constructor de la clase
      *
@@ -353,5 +359,23 @@ class ShipIt
         $response = $this->get(self::METHOD_POST, '/shippings/cost', $data);
 
         return new QuotationItem($response->shipment);
+    }
+
+    /**
+     * Retorna la url de seguimiento de un envio
+     *
+     * @param string $provider proveedor de servicio
+     * @param string $trackingNumber número de tracking
+     * @return string
+     */
+    public function getTrackingUrl($provider, $trackingNumber)
+    {
+        if(!isset($this->providersTrakingUrls[$provider])){
+            return null;
+        }
+
+        $url = $this->providersTrakingUrls[$provider];
+
+        return trans($url, ['number' => $trackingNumber]);
     }
 }
