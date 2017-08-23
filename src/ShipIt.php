@@ -376,6 +376,6 @@ class ShipIt
 
         $url = $this->providersTrakingUrls[$provider];
 
-        return trans($url, ['number' => $trackingNumber]);
+        return str_replace(":number", $trackingNumber, $url);
     }
 }
