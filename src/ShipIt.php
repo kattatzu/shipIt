@@ -288,7 +288,7 @@ class ShipIt
 
         $response = $this->get(self::METHOD_GET, '/packages/' . $id);
 
-        return new Shipping($response);
+        return new Shipping($response, $this);
     }
 
 

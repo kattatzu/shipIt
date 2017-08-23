@@ -251,6 +251,10 @@ Puede generar la url de seguimiento de un despacho fácilmente:
 
 ```php
 $url = $shipIt->getTrackingUrl('chilexpress', 72626262);
+
+// o
+
+$url = ShipIt::getShipping(136097)->getTrackingUrl()
 ```
 
 ## Instalación y Uso en Laravel
