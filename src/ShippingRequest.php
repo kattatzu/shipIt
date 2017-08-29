@@ -116,10 +116,16 @@ class ShippingRequest
         $data['address_attributes']['street'] = $data['address_street'];
         $data['address_attributes']['number'] = $data['address_number'];
         $data['address_attributes']['complement'] = $data['address_complement'];
-        $data['address_attributes']['coords']['latitude'] = $data['address_coords_latitude'];
-        $data['address_attributes']['coords']['longitude'] = $data['address_coords_longitude'];
+        //$data['address_attributes']['coords']['latitude'] = $data['address_coords_latitude'];
+        //$data['address_attributes']['coords']['longitude'] = $data['address_coords_longitude'];
 
         unset($data['commune_id']);
+        unset($data['address_commune_id']);
+        unset($data['address_street']);
+        unset($data['address_number']);
+        unset($data['address_complement']);
+        unset($data['address_coords_latitude']);
+        unset($data['address_coords_longitude']);
 
         return $data;
     }

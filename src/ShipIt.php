@@ -216,13 +216,7 @@ class ShipIt
      */
     public function requestShipping(ShippingRequest $request)
     {
-        $data = [
-            'package' => $request->toShipItFormat($this->environment())
-        ];
-
-        $response = $this->get(self::METHOD_POST, '/packages', $data);
-
-        return new ShippingRequestResponse($response);
+        return $this->requestMassiveShipping([$request]);
     }
 
     /**
