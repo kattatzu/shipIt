@@ -21,7 +21,7 @@ class QuotationRequest
         'courrier_for_client' => '',
         'destiny' => 'Domicilio',
         'height' => 0,
-        'is_payable' => false,
+        //'is_payable' => false,
         'length' => 0,
         'weight' => 0,
         'width' => 0
@@ -66,6 +66,10 @@ class QuotationRequest
         $data = $this->data;
         $data['address_attributes']['commune_id'] = $data['commune_id'];
         unset($data['commune_id']);
+
+        if(is_null($data['weight'])){
+            $data['weight'] = 'null';
+        }
 
         return array('package' => $data);
     }

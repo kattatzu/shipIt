@@ -216,7 +216,13 @@ class ShipIt
      */
     public function requestShipping(ShippingRequest $request)
     {
-        return $this->requestMassiveShipping([$request]);
+        $data = [
+            'package' => $request->toShipItFormat($this->environment())
+        ];
+
+        $response = $this->get(self::METHOD_POST, '/packages', $data);
+
+        return new ShippingRequestResponse($response);
     }
 
     /**
@@ -234,6 +240,8 @@ class ShipIt
         foreach ($items as $item) {
             $data['packages'][] = $item->toShipItFormat($this->environment());
         }
+
+        \Illuminate\Support\Facades\Log::info('POST /packages/mass_create', $data);
 
         $response = $this->get(self::METHOD_POST, '/packages/mass_create', $data);
 

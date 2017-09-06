@@ -119,7 +119,6 @@ class ShippingRequest
         //$data['address_attributes']['coords']['latitude'] = $data['address_coords_latitude'];
         //$data['address_attributes']['coords']['longitude'] = $data['address_coords_longitude'];
 
-        unset($data['commune_id']);
         unset($data['address_commune_id']);
         unset($data['address_street']);
         unset($data['address_number']);
