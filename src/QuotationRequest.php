@@ -1,5 +1,6 @@
 <?php namespace Kattatzu\ShipIt;
 
+use Illuminate\Support\Facades\Log;
 use Kattatzu\ShipIt\Exception\AttributeNotValidException;
 
 class QuotationRequest
