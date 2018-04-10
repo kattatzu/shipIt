@@ -241,8 +241,6 @@ class ShipIt
             $data['packages'][] = $item->toShipItFormat($this->environment());
         }
 
-        \Illuminate\Support\Facades\Log::info('POST /packages/mass_create', $data);
-
         $response = $this->get(self::METHOD_POST, '/packages/mass_create', $data);
 
         return new ShippingRequestResponse($response);
